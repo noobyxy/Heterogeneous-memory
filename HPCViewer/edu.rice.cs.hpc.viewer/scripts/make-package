@@ -1,0 +1,110 @@
+#!/bin/bash
+# Script to create packages of hpcviewer or hpctraceviewer from different platforms
+# To run this script, you need to export hpcviewer and/or hpctraceviewer into a
+# directory (called "export/hpcviewer" for instance). Eclipse will then create
+# a set of directories named linux.xxx, macos.yyy, etc.
+# copy this script into export directory, and then run in inside export/hpcviewer 
+# as follows:
+#   ../make-package hpcviewer
+# (it's ugly, but it works)
+
+# example of variable initialization
+viewer="hpctraceviewer"
+release=`date -Idate`
+
+if [ $# -eq 1 ]; then
+  viewer=$1
+elif [ $# -eq 2 ]; then
+  viewer=$1
+  release=$2 
+else
+  echo "Syntax: $0 viewer_name release"
+  echo "viewer_name is either 'hpcviewer' or 'hpctraceviewer'"
+  echo "Example: $0 $viewer $release"
+  exit
+fi
+
+if [ $viewer = "hpcviewer" ]; then
+  pdir=viewer
+elif [ $viewer = "hpctraceviewer" ]; then
+  pdir=traceviewer
+else
+  echo "Unknown viewer: $viewer"
+  exit
+fi
+
+# looking for different platforms
+
+for i in *; do echo $i 
+  cd $i
+  
+  # special treatment for Mac platform under Eclipse MARS
+  # due to Eclipse bug, we need to change the layout of the files and directory
+  # to make the application executable and contains icons
+  # see bugs:
+  #   Bug 483101 - [macosx] Rcp product build fails with 4.5
+  #   Bug 465602 - p2 fails to resolve a target platform with Eclipse Mars artifacts on Mac OS X
+  #   Bug 474494 - Wrong directory structure for MacOS executables created
+  
+  if [ "$i" == "macosx.cocoa.x86_64" ]; then
+     cd $viewer
+     # check if we have separate Resources, MacOS and Info.plist
+     if [ -e MacOS/${viewer} ]; then
+        mv MacOS/${viewer} ${viewer}.app/Contents/MacOS
+        rmdir MacOS
+     fi
+     if [ -e Resources  ]; then
+        mv Resources ${viewer}.app/Contents/
+     fi
+     if [ -e Info.plist ]; then
+        mv Info.plist ${viewer}.app/Contents/
+     fi
+     cd ..
+  fi
+  
+  plugin="${viewer}/plugins/edu.rice.cs.hpc.${pdir}_*"
+  
+  for f in $plugin; do echo "plugin: $f"
+  if [ -d $f ] ; then
+     mv ${f}/scripts . 
+     cd scripts 
+     bash make-dist ../$viewer >/tmp/out
+     mv $viewer.tar.gz ../../$viewer-$release-$i.tgz
+     cd ../../ 
+     ls -l $viewer-$release-$i*
+  else
+     echo "Plugin does not exist: $f"
+     exit
+  fi
+  done
+done
+
+##########################################
+# creating the zip version of the release
+# argument 1: distribution type to zip
+##########################################
+zipper ()
+{
+  mkdir tmp
+  cd tmp
+  for f in ../*."$1".*.tgz; do echo $f
+    if [ -e $f ]; then
+      tar xzf $f
+      z=`echo $f | sed -e "s/tgz/zip/g" `
+      echo "new file: $z"
+      
+      # Windows and Mac platform doesn't need installation procedure
+      # remove anything related to bash script and install
+      
+      rm $viewer/install $viewer/hpcviewer.sh
+      zip -r $z $viewer/*
+      ls -l $z
+      rm -rf $viewer $f
+    fi
+  done
+  cd ..
+  rmdir tmp
+}
+
+zipper win32
+zipper cocoa

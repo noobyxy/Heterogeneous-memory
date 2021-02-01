@@ -1,0 +1,82 @@
+#!/bin/sh
+#
+# Copy the README, install, etc scripts into the hpcviewer directory
+# and make a tar file from the result.  This is mostly temporary until
+# the Linux command-line build system supports make dist.
+#
+# Usage: make-dist dir
+#
+# where "dir" is the hpcviewer directory that eclipse has already
+# built.
+#
+# $Id: make-dist 311 2009-03-03 21:31:24Z laksono $
+#
+
+copy_files="README README.License install hpcviewer.sh"
+
+die()
+{
+    echo "$0: $*" 1>&2
+    exit 1
+}
+
+usage()
+{
+    cat <<EOF
+Usage: $0 directory
+EOF
+    exit 0
+}
+
+# Create the tar file in the current directory.
+output_dir=`pwd`
+
+#
+# The install files are in the scripts directory.
+#
+script="$0"
+if test -L "$script" ; then
+    script=`readlink "$script"`
+fi
+script_dir=`dirname "$script"`
+script_dir=`( cd "$script_dir" && pwd )`
+
+test -f "${script_dir}/install" || \
+    die "unable to find scripts directory"
+
+#
+# Check that the hpcviewer directory ($1) looks right.
+#
+test "x$1" != x || usage
+viewer_dir=`( cd "$1" && pwd )`
+test -d "${viewer_dir}/plugins" \
+    || die "bad hpcviewer directory: $1"
+
+#
+# Copy files into the viewer directory, set install script to be
+# executable.
+#
+cd "$script_dir" || die "unable to cd: $script_dir"
+for f in $copy_files
+do
+    cp -f "$f" "${viewer_dir}/$f" || die "unable to copy: $f"
+done
+chmod 755 "${viewer_dir}/install"
+
+#
+# Tar the directory and gzip.
+#
+name=`basename "$viewer_dir"`
+cd "${viewer_dir}/.." || die "unable to cd: ${viewer_dir}/.."
+test -d "$name" || die "no such directory: $name"
+
+rm -f "${output_dir}/${name}.tar" "${output_dir}/${name}.tar.gz"
+tar cvf "${output_dir}/${name}.tar" --exclude .svn "$name" \
+    || die "unable to tar: $name"
+
+cd "$output_dir"
+echo "gzipping ..."
+gzip "${name}.tar" || die "unable to gzip: ${name}.tar"
+
+echo
+ls -l "${name}.tar.gz"

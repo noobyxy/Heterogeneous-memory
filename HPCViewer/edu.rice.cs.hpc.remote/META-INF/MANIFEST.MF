@@ -1,0 +1,27 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: hpcremote
+Bundle-SymbolicName: edu.rice.cs.hpc.remote
+Bundle-Version: 5.5.1.qualifier
+Require-Bundle: edu.rice.cs.hpc.data,
+ edu.rice.cs.hpc.traceviewer.data,
+ com.jcraft.jzlib
+Export-Package: com.jcraft.jsch,
+ edu.rice.cs.hpc.remote.data,
+ edu.rice.cs.hpc.remote.tunnel
+Import-Package: com.jcraft.jsch,
+ edu.rice.cs.hpc.traceviewer.data.db,
+ edu.rice.cs.hpc.traceviewer.data.graph,
+ edu.rice.cs.hpc.traceviewer.data.util,
+ org.eclipse.core.runtime,
+ org.eclipse.core.runtime.jobs,
+ org.eclipse.jface,
+ org.eclipse.jface.action,
+ org.eclipse.jface.dialogs,
+ org.eclipse.jface.layout,
+ org.eclipse.jface.window,
+ org.eclipse.swt,
+ org.eclipse.swt.widgets,
+ org.eclipse.ui
+Bundle-Vendor: Rice University
+Automatic-Module-Name: edu.rice.cs.hpc.remote

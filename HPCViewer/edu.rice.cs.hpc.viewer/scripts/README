@@ -1,0 +1,48 @@
+========================
+HPCViewer Install Notes
+========================
+
+Requirements:
+- Java 1.8 
+- GTk 
+
+Note:
+To run with Java 9 or newer, it is required to modify hpcviewer.ini 
+and add the following flag at the end of the file::
+
+--add-modules=ALL-SYSTEM
+
+
+Supported Platforms
+
+1. Linux/Unix
+
+To install hpcviewer, unpack the tar file, cd into its directory (the
+directory containing this README file) and run:
+
+   ./install [-j java-dir] install-dir
+
+where 'java-dir' is a Java jdk or jre directory, and 'install-dir' is
+the directory in which to install.  The java-dir is optional, but
+install-dir is required.  Run the install script from its own
+directory as ./install.
+
+If you use '-j java-dir', then the install script captures the java
+bin directory and adds it to PATH in the hpcviewer launch script.
+This ensures that hpcviewer always uses the same version of Java.
+Without this option, then hpcviewer will use whatever version of java
+is first on your PATH.
+
+It is possible to install hpcviewer in either the same install
+directory as hpctoolkit (where install-dir is the prefix directory
+from hpctoolkit's configure) or in a separate directory.
+
+
+2. Mac OS X
+
+No installation procedures required
+
+
+3. Windows
+
+No installation procedures required

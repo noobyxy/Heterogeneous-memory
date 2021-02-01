@@ -1,0 +1,27 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: hpctraceviewer_data
+Bundle-SymbolicName: edu.rice.cs.hpc.traceviewer.data;singleton:=true
+Bundle-Version: 5.5.1.qualifier
+Bundle-Vendor: Rice University
+Import-Package: edu.rice.cs.hpc.common.ui,
+ edu.rice.cs.hpc.data.experiment.extdata,
+ edu.rice.cs.hpc.data.util,
+ org.eclipse.core.runtime;version="3.4.0",
+ org.eclipse.jface.action,
+ org.eclipse.jface.dialogs,
+ org.eclipse.swt,
+ org.eclipse.swt.graphics,
+ org.eclipse.swt.widgets,
+ org.eclipse.ui,
+ org.eclipse.ui.services
+Require-Bundle: edu.rice.cs.hpc.data,
+ edu.rice.cs.hpc.common
+Export-Package: edu.rice.cs.hpc.traceviewer.data.controller,
+ edu.rice.cs.hpc.traceviewer.data.db,
+ edu.rice.cs.hpc.traceviewer.data.graph,
+ edu.rice.cs.hpc.traceviewer.data.timeline,
+ edu.rice.cs.hpc.traceviewer.data.util,
+ edu.rice.cs.hpc.traceviewer.data.version2,
+ edu.rice.cs.hpc.traceviewer.data.version3
+Automatic-Module-Name: edu.rice.cs.hpc.traceviewer.data

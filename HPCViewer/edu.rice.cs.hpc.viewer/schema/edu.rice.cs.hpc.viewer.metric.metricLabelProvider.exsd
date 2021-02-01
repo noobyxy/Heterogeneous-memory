@@ -1,0 +1,100 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!-- Schema file written by PDE -->
+<schema targetNamespace="edu.rice.cs.hpc.viewer" xmlns="http://www.w3.org/2001/XMLSchema">
+<annotation>
+      <appinfo>
+         <meta.schema plugin="edu.rice.cs.hpc.viewer" id="edu.rice.cs.hpc.viewer.metric.metricLabelProvider" name="Metric Label Provider"/>
+      </appinfo>
+      <documentation>
+         &lt;p&gt;
+This extension point allows the label provider used to provide metric column content to be extended.  This includes the metrics cells of the ScopeView (and other views based on it).  An extension to this extension point is able to control colors, fonts, and even the text value string to be used in the cell.  The extension point was created to allow the control of color but does not restrict the user from overriding other label provider fields.
+&lt;/p&gt;
+      </documentation>
+   </annotation>
+
+   <element name="extension">
+      <annotation>
+         <appinfo>
+            <meta.element />
+         </appinfo>
+      </annotation>
+      <complexType>
+         <choice minOccurs="1" maxOccurs="unbounded">
+            <element ref="labelProvider"/>
+         </choice>
+         <attribute name="point" type="string" use="required">
+            <annotation>
+               <documentation>
+                  
+               </documentation>
+            </annotation>
+         </attribute>
+         <attribute name="id" type="string">
+            <annotation>
+               <documentation>
+                  
+               </documentation>
+            </annotation>
+         </attribute>
+         <attribute name="name" type="string">
+            <annotation>
+               <documentation>
+                  
+               </documentation>
+               <appinfo>
+                  <meta.attribute translatable="true"/>
+               </appinfo>
+            </annotation>
+         </attribute>
+      </complexType>
+   </element>
+
+   <element name="labelProvider">
+      <complexType>
+         <attribute name="class" type="string" use="required">
+            <annotation>
+               <documentation>
+                  The class which implements the extension and extends edu.rice.cs.hpc.viewer.metric.BaseMetricLabelProvider.
+               </documentation>
+               <appinfo>
+                  <meta.attribute kind="java" basedOn="edu.rice.cs.hpc.viewer.metric.BaseMetricLabelProvider:edu.rice.cs.hpc.viewer.metric.IMetricLabelProvider"/>
+               </appinfo>
+            </annotation>
+         </attribute>
+      </complexType>
+   </element>
+
+   <annotation>
+      <appinfo>
+         <meta.section type="since"/>
+      </appinfo>
+      <documentation>
+         5.2.???
+      </documentation>
+   </annotation>
+
+   <annotation>
+      <appinfo>
+         <meta.section type="examples"/>
+      </appinfo>
+      <documentation>
+         &lt;p&gt;
+The extension point is used by some Bull extensions to the hpcviewer which create a new type of scope view.  This extension point allows the new Bull view to apply color to cells in the new view that may represent program bottlenecks in the test results.
+&lt;/p&gt;
+      </documentation>
+   </annotation>
+
+   <annotation>
+      <appinfo>
+         <meta.section type="apiinfo"/>
+      </appinfo>
+      <documentation>
+         &lt;p&gt;
+The BaseMetricLabelProvider class provides default implementations for each of the methods that can be overridden when extending this extension point.  The setter methods in this class are called by the extension point implementation to provide the extension with the identity of the cell being processed by the label provider.  These setter methods should not be overridden.
+&lt;/p&gt;
+      </documentation>
+   </annotation>
+
+
+
+</schema>

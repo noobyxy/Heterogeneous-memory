@@ -1,0 +1,302 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.4"?>
+<plugin>
+
+   <extension
+         id="application"
+         name="hpctraceviewer"
+         point="org.eclipse.core.runtime.applications">
+      <application
+            icon="icons/hpctraceviewer048.png">
+         <run
+               class="edu.rice.cs.hpc.traceviewer.framework.Application">
+         </run>
+      </application>
+   </extension>
+   <extension
+         point="org.eclipse.ui.perspectives">
+      <perspective
+            name="Perspective"
+            class="edu.rice.cs.hpc.traceviewer.ui.Perspective"
+            id="hpctraceview.perspective">
+      </perspective>
+   </extension>
+   <extension
+         point="org.eclipse.ui.views">
+      <view
+            class="edu.rice.cs.hpc.traceviewer.main.HPCTraceView"
+            icon="icons/trace-detail.png"
+            id="hpctraceview.view"
+            name="Trace View">
+      </view>
+      <view
+            class="edu.rice.cs.hpc.traceviewer.depth.HPCDepthView"
+            icon="icons/trace-depth.png"
+            id="hpcdepthview.view"
+            name="Depth View">
+	  </view>
+	  <view
+         	class="edu.rice.cs.hpc.traceviewer.misc.HPCCallStackView"
+        	icon="icons/trace-callpath.png"
+         	id="hpccallstackview.view"
+         	name="Call Path">
+	  </view>
+	  <view
+         	class="edu.rice.cs.hpc.traceviewer.summary.HPCSummaryView"
+        	icon="icons/trace-summary.png"
+         	id="hpcsummaryview.view"
+         	name="Summary View">
+	  </view>
+   <view
+         class="edu.rice.cs.hpc.traceviewer.statistic.HPCStatView"
+         icon="icons/trace-stat.png"
+         id="hpcstat.view"
+         name="Statistics"
+         restorable="true">
+   </view>
+   </extension>
+   <extension
+         id="product"
+         point="org.eclipse.core.runtime.products">
+      <product
+            application="edu.rice.cs.hpc.traceviewer.application"
+            name="hpctraceviewer">
+         <property
+               name="appName"
+               value="hpctraceviewer">
+         </property>
+         <property
+               name="windowImages"
+               value="icons/hpctraceviewer016.png,icons/hpctraceviewer032.png,icons/hpctraceviewer048.png,icons/hpctraceviewer128.png">
+         </property>
+         <property
+               name="aboutImage"
+               value="icons/hpctraceviewer048.png">
+         </property>
+         <property
+               name="aboutText"
+               value="hpctraceviewer is part of Rice University&apos;s HPCToolkit project. Development of  HPCToolkit is principally funded by the Department of Energy&apos;s Office of Science, Lawrence Livermore National Laboratory and National Science Foundation.&#x0A;&#x0A;Release 2020.07   (C) Copyright 2020, Rice University.">
+         </property>
+         <property
+               name="startupProgressRect"
+               value="0,275,445,15">
+         </property>
+         <property
+               name="preferenceCustomization"
+               value="plugin_customization.ini">
+         </property>
+      </product>
+   </extension>
+   <extension
+         point="org.eclipse.ui.commands">
+      <command
+            defaultHandler="edu.rice.cs.hpc.traceviewer.actions.OpenDatabase"
+            id="edu.rice.cs.hpc.traceviewer.openDatabase"
+            name="Open Local Database">
+      </command>
+      <command
+            defaultHandler="edu.rice.cs.hpc.traceviewer.actions.OpenRemoteDatabase"
+            id="edu.rice.cs.hpc.traceviewer.openRemoteDatabase"
+            name="Open Remote Database">
+      </command>
+      <command
+      		defaultHandler="edu.rice.cs.hpc.traceviewer.actions.ResetViews"
+      		id="edu.rice.cs.hpc.traceviewer.resetViews"
+      		name="Reset Views">
+      </command>
+      <command
+            defaultHandler="edu.rice.cs.hpc.traceviewer.actions.OptionRecordsDisplay"
+            id="edu.rice.cs.hpc.traceviewer.showRecords"
+            name="Show number of records">
+         <state
+               class="org.eclipse.ui.handlers.RegistryToggleState:false"
+               id="org.eclipse.ui.commands.toggleState">
+         </state>
+      </command>
+      <command
+            defaultHandler="edu.rice.cs.hpc.traceviewer.actions.ProcedureClassMapAction"
+            description="Show procedure-class mapping "
+            id="edu.rice.cs.hpc.traceviewer.actions.ProcedureClassMapAction"
+            name="Procedure map">
+      </command>
+      <command
+            defaultHandler="edu.rice.cs.hpc.traceviewer.actions.FilterRanks"
+            id="edu.rice.cs.hpc.traceviewer.actions.FilterRanks"
+            name="Filter ranks">
+      </command>
+      <command
+            defaultHandler="edu.rice.cs.hpc.traceviewer.actions.OptionMidpoint"
+            id="edu.rice.cs.hpc.traceviewer.actions.OptionMidpoint"
+            name="midpoint">
+         <state
+               class="org.eclipse.ui.handlers.RegistryToggleState:false"
+               id="org.eclipse.ui.commands.toggleState">
+         </state>
+      </command>
+      <command
+            defaultHandler="edu.rice.cs.hpc.traceviewer.actions.Refresh"
+            id="edu.rice.cs.hpc.traceviewer.actions.Refresh"
+            name="Refresh">
+      </command>
+   </extension>
+   <extension
+         id="edu.rice.cs.hpc.traceviewer.menus"
+         point="org.eclipse.ui.menus">
+      <menuContribution
+            allPopups="false"
+            locationURI="menu:org.eclipse.ui.main.menu">
+         <menu
+               id="edu.rice.cs.hpc.traceviewer.menu.file"
+               label="File"
+               mnemonic="F"
+               tooltip="File database menu">
+            <command
+                  commandId="edu.rice.cs.hpc.traceviewer.openDatabase"
+                  label="Open Local Database"
+                  mnemonic="O"
+                  style="push"
+                  tooltip="Open a new database (the existing database will be replaced).">
+            </command>
+            <command
+                  commandId="edu.rice.cs.hpc.traceviewer.openRemoteDatabase"
+                  label="Open Remote Database"
+                  mnemonic="R"
+                  style="push">
+            </command>
+            <separator
+                  name="edu.rice.cs.hpc.traceviewer.separator1">
+            </separator>
+            <command
+                  commandId="org.eclipse.ui.file.exit"
+                  label="Exit"
+                  mnemonic="x"
+                  style="push"
+                  tooltip="Exit the application">
+            </command>
+         </menu>
+         <menu
+               id="edu.rice.cs.hpc.traceviewer.menu.view"
+               label="View"
+               mnemonic="V"
+               tooltip="View menu">
+            <command
+                  commandId="edu.rice.cs.hpc.traceviewer.actions.OptionMidpoint"
+                  id="edu.rice.cs.hpc.traceviewer.actions.OptionMidpoint"
+                  label="Using midpoint painting"
+                  mnemonic="U"
+                  style="toggle"
+                  tooltip="Enable using midpoint painting to present  a paint line as a midpoint between two samples  ">
+            </command>
+            <command
+                  commandId="edu.rice.cs.hpc.traceviewer.actions.ProcedureClassMapAction"
+                  label="Show procedure-color mapping"
+                  mnemonic="c"
+                  style="push">
+            </command>
+            <separator
+                  name="edu.rice.cs.hpc.traceviewer.separator1">
+            </separator>
+            <command
+                  commandId="edu.rice.cs.hpc.traceviewer.actions.FilterRanks"
+                  label="Filter ranks"
+                  mnemonic="F"
+                  style="push"
+                  tooltip="Filter displayed ranks">
+               <visibleWhen
+                     checkEnabled="false">
+                  <with
+                        variable="edu.rice.cs.hpc.traceviewer.services.DataService.data">
+                     <equals
+                           value="ENABLED">
+                     </equals>
+                  </with>
+               </visibleWhen>
+            </command>
+            <menu
+                  label="Debug"
+                  mnemonic="&amp;D"
+                  tooltip="Debugging information (only for expert users or tool developers)">
+               <command
+                     commandId="edu.rice.cs.hpc.traceviewer.showRecords"
+                     id="edu.rice.cs.hpc.traceviewer.showRecords"
+                     label="Show debug info "
+                     mnemonic="S"
+                     style="toggle"
+                     tooltip="Show the number of trace records displayed in the trace view (useful for identifying blocking operations and debugging)">
+               </command>
+            </menu>
+         </menu>
+         <menu
+               id="edu.rice.cs.hpc.traceviewer.menu.window"
+               label="Window"
+               mnemonic="W"
+               tooltip="Window menu">
+            <command
+                  commandId="edu.rice.cs.hpc.traceviewer.resetViews"
+                  label="Reset Views"
+                  mnemonic="R"
+                  style="push"
+                  tooltip="Resets the setup of the program to its original view configuration.">
+            </command>
+         </menu>
+         <menu
+               id="edu.rice.cs.hpc.traceviewer.menu.help"
+               label="Help"
+               mnemonic="H"
+               tooltip="Help menu">
+            <command
+                  commandId="org.eclipse.ui.help.aboutAction"
+                  label="About"
+                  mnemonic="A"
+                  style="push"
+                  tooltip="About hpctraceviewer">
+            </command>
+         </menu>
+      </menuContribution>
+      <menuContribution
+            allPopups="false"
+            locationURI="toolbar:hpcdepthview.view">
+         <command
+               commandId="edu.rice.cs.hpc.traceviewer.actions.Refresh"
+               icon="icons/refresh-16.png"
+               label="Refresh"
+               style="push"
+               tooltip="Refresh data and repaint the views">
+            <visibleWhen
+                  checkEnabled="false">
+               <with
+                     variable="edu.rice.cs.hpc.traceviewer.services.DataService.data">
+                  <equals
+                        value="ENABLED">
+                  </equals>
+               </with>
+            </visibleWhen>
+         </command>
+      </menuContribution>
+   </extension>
+   <extension
+         point="org.eclipse.ui.services">
+      <sourceProvider
+            provider="edu.rice.cs.hpc.traceviewer.services.DataService">
+         <variable
+               name="edu.rice.cs.hpc.traceviewer.services.DataService.data"
+               priorityLevel="workbench">
+         </variable>
+         <variable
+               name="edu.rice.cs.hpc.traceviewer.services.DataService.update"
+               priorityLevel="workbench">
+         </variable>
+      </sourceProvider>
+      <sourceProvider
+            provider="edu.rice.cs.hpc.traceviewer.services.SummaryDataService">
+         <variable
+               name="edu.rice.cs.hpc.traceviewer.services.SummaryDataService.update"
+               priorityLevel="workbench">
+         </variable>
+         <variable
+               name="edu.rice.cs.hpc.traceviewer.services.SummaryDataService.request"
+               priorityLevel="workbench">
+         </variable>
+      </sourceProvider>
+   </extension>
+</plugin>

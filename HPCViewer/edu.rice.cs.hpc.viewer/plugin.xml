@@ -1,0 +1,479 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.4"?>
+<plugin>
+   <extension-point 
+		id="edu.rice.cs.hpc.viewer.metric.metricLabelProvider"
+		name="Metric Label Provider"
+		schema="schema/edu.rice.cs.hpc.viewer.metric.metricLabelProvider.exsd"/>
+   <extension-point 
+      id="edu.rice.cs.hpc.viewer.util.windowTitle"
+      name="Window Title"
+      schema="schema/edu.rice.cs.hpc.viewer.util.windowTitle.exsd"/>
+   <extension
+         id="application"
+         name="hpcviewer"
+         point="org.eclipse.core.runtime.applications">
+      <application
+            icon="icons/hpcviewerEclipse64.gif">
+         <run
+               class="edu.rice.cs.hpc.viewer.framework.HPCViewer">
+         </run>
+      </application>
+   </extension>
+   <extension
+         point="org.eclipse.ui.perspectives">
+      <perspective
+            class="edu.rice.cs.hpc.viewer.framework.Perspective"
+            icon="icons/hpc-16x16.png"
+            id="edu.rice.cs.hpc.perspective"
+            name="hpcviewer">
+      </perspective>
+   </extension>
+   <extension
+         point="org.eclipse.ui.views">
+      <view
+            allowMultiple="true"
+            class="edu.rice.cs.hpc.viewer.scope.topdown.ScopeView"
+            icon="icons/cct.png"
+            id="edu.rice.cs.hpc.viewer.scope.ScopeView"
+            name="ScopeView">
+      </view>
+      <view
+            allowMultiple="true"
+            class="edu.rice.cs.hpc.viewer.scope.flat.FlatScopeView"
+            icon="icons/flat.png"
+            id="edu.rice.cs.hpc.viewer.scope.FlatScopeView"
+            name="FlatScopeView">
+      </view>
+      <view
+            allowMultiple="true"
+            class="edu.rice.cs.hpc.viewer.scope.bottomup.CallerScopeView"
+            icon="icons/caller.png"
+            id="edu.rice.cs.hpc.viewer.scope.CallerScopeView"
+            name="CallerView">
+      </view>
+      <view
+            allowMultiple="true"
+            class="edu.rice.cs.hpc.viewer.scope.thread.ThreadView"
+            icon="icons/cct-thread.png"
+            id="edu.rice.cs.hpc.viewer.scope.thread.ThreadView"
+            name="Thread view"
+            restorable="true">
+      </view>
+      <view
+            allowMultiple="true"
+            class="edu.rice.cs.hpc.viewer.scope.datacentric.DataView"
+            icon="icons/datacentric.png"
+            id="edu.rice.cs.hpc.viewer.scope.datacentric.DataView"
+            name="Datacentric">
+      </view>
+   </extension>
+   <extension
+         id="product"
+         point="org.eclipse.core.runtime.products">
+      <product
+            application="edu.rice.cs.hpc.viewer.application"
+            name="hpcviewer">
+         <property
+               name="appName"
+               value="hpcviewer">
+         </property>
+         <property
+               name="aboutImage"
+               value="icons/hpcviewerEclipseShadow128.png">
+         </property>
+         <property
+               name="aboutText"
+               value="hpcviewer is a user interface for analyzing a database of performance metrics in conjunction with an application&apos;s source code.&#x0A;&#x0A;hpcviewer is part of Rice University&apos;s HPCToolkit project. Development of HPCToolkit is principally funded by the Department of Energy&apos;s Office of Science, Lawrence Livermore National Laboratory and National Science Foundation.&#x0A;&#x0A;Release 2020.07  (C) Copyright 2020, Rice University.">
+         </property>
+         <property
+               name="windowImages"
+               value="icons/hpcviewerEclipse16.gif,icons/hpcviewerEclipse32.gif,icons/hpcviewerEclipse48.gif,icons/hpcviewerEclipse64.gif,icons/hpcviewerEclipse128.gif">
+         </property>
+         <property
+               name="startupForegroundColor"
+               value="000000">
+         </property>
+         <property
+               name="startupMessageRect"
+               value="7,252,445,20">
+         </property>
+         <property
+               name="startupProgressRect"
+               value="0,275,445,15">
+         </property>
+         <property
+               name="preferenceCustomization"
+               value="plugin_customization.ini">
+         </property>
+      </product>
+   </extension>
+   <extension
+      point="org.eclipse.ui.editors">
+	   <editor
+          class="edu.rice.cs.hpc.viewer.editor.SourceCodeEditor"
+          default="true"
+          extensions="*"
+          icon="icons/hpc-16x16.png"
+          id="edu.rice.cs.hpc.viewer.util.SourceCodeEditor"
+          name="Source Code Editor">
+   		</editor>
+    <editor
+          class="edu.rice.cs.hpc.viewer.help.HTMLEditor"
+          icon="icons/hpc-merged-16x16.png"
+          id="edu.rice.cs.hpc.viewer.util.HTMLEditor"
+          name="Web editor">
+    </editor>
+    <editor
+          class="edu.rice.cs.hpc.viewer.graph.GraphEditorPlot"
+          default="false"
+          extensions="*"
+          icon="icons/hpcviewer-icon-editor-plot.png"
+          id="edu.rice.cs.hpc.viewer.graph.GraphEditorPlot"
+          name="Plot editor">
+    </editor>
+    <editor
+          class="edu.rice.cs.hpc.viewer.graph.GraphEditorPlotSort"
+          default="false"
+          extensions="*"
+          icon="icons/hpcviewer-icon-editor-plotsort.png"
+          id="edu.rice.cs.hpc.viewer.graph.GraphEditorPlotSort"
+          name="Sort editor">
+    </editor>
+    <editor
+          class="edu.rice.cs.hpc.viewer.graph.GraphEditorHisto"
+          default="false"
+          extensions="*"
+          icon="icons/hpcviewer-icon-editor-histo.png"
+          id="edu.rice.cs.hpc.viewer.graph.GraphEditorHisto"
+          name="Histogram editor">
+    </editor>
+    <editor
+          class="edu.rice.cs.hpc.viewer.scope.thread.ThreadEditor"
+          default="false"
+          extensions="*"
+          icon="icons/cct-thread-map.png"
+          id="edu.rice.cs.hpc.viewer.scope.thread.ThreadEditor"
+          name="Thread metrics">
+    </editor>
+   </extension>
+   <extension
+         point="org.eclipse.ui.preferencePages">
+      <page
+            class="edu.rice.cs.hpc.viewer.util.ViewerPreferencePage"
+            id="edu.rice.cs.hpc.viewer.util.PreferencePage"
+            name="hpcviewer Preferences">
+      </page>
+   </extension>
+   <extension
+         point="org.eclipse.core.runtime.preferences">
+      <initializer
+            class="edu.rice.cs.hpc.viewer.util.PreferenceInitializer">
+      </initializer>
+   </extension>
+   <extension
+         point="org.eclipse.ui.menus">
+      <menuContribution
+            allPopups="false"
+            locationURI="menu:org.eclipse.ui.main.menu">
+         <menu
+               label="File"
+               mnemonic="F"
+               tooltip="File menu">
+            <command
+                  commandId="edu.rice.cs.hpc.viewer.command.newWindow"
+                  label="New window"
+                  mnemonic="N"
+                  style="push">
+            </command>
+            <command
+                  commandId="edu.rice.cs.hpc.viewer.command.openDatabase"
+                  label="Open database"
+                  mnemonic="O"
+                  style="push"
+                  tooltip="Open a database">
+            </command>
+            <menu
+                  id="edu.rice.cs.hpc.viewer.menu.merge"
+                  label="Merge databases"
+                  mnemonic="M"
+                  tooltip="Merge two databases">
+               <visibleWhen
+                     checkEnabled="false">
+                  <with
+                        variable="edu.rice.cs.hpc.viewer.provider.data.merge">
+                     <equals
+                           value="ENABLED">
+                     </equals>
+                  </with>
+               </visibleWhen>
+               <command
+                     commandId="edu.rice.cs.hpc.viewer.command.mergeDatabaseTopDown"
+                     label="Merge top-down databases"
+                     mnemonic="t"
+                     style="push"
+                     tooltip="Merging two or more top-down (calling context) databases">
+               </command>
+               <command
+                     commandId="edu.rice.cs.hpc.viewer.command.mergeDatabaseFlat"
+                     label="Merge flat databases"
+                     mnemonic="f"
+                     style="push"
+                     tooltip="Merge two or more flat databases">
+               </command>
+            </menu>
+            <command
+                  commandId="edu.rice.cs.hpc.viewer.command.closeDatabase"
+                  label="Close database"
+                  mnemonic="C"
+                  style="push"
+                  tooltip="Close database(s)">
+               <visibleWhen
+                     checkEnabled="false">
+                  <with
+                        variable="edu.rice.cs.hpc.viewer.provider.data.active">
+                     <equals
+                           value="ENABLED">
+                     </equals>
+                  </with>
+               </visibleWhen>
+            </command>
+            <separator
+                  name="edu.rice.cs.hpc.viewer.separator1"
+                  visible="true">
+            </separator>
+            <command
+                  commandId="org.eclipse.ui.window.preferences"
+                  label="Preferences"
+                  mnemonic="p"
+                  style="push"
+                  tooltip="Set the preferences and hpcviewer settings">
+            </command>
+            <separator
+                  name="edu.rice.cs.hpc.viewer.separator2"
+                  visible="true">
+            </separator>
+            <command
+                  commandId="edu.rice.cs.hpc.viewer.command.closeWindow"
+                  label="Close window"
+                  mnemonic="C"
+                  style="push"
+                  tooltip="Closing a window (it also closes the application if only one window is created)">
+            </command>
+            <command
+                  commandId="org.eclipse.ui.file.exit"
+                  label="Exit hpcviewer"
+                  mnemonic="x"
+                  style="push"
+                  tooltip="Exit the application">
+            </command>
+         </menu>
+         <menu
+               label="Filter"
+               mnemonic="i"
+               tooltip="Menus for excluding certains functions">
+            <command
+                  commandId="edu.rice.cs.hpc.filter.action.ShowFilterView"
+                  label="Show filter"
+                  mnemonic="S"
+                  style="push"
+                  tooltip="Show the properties of filter (such as patterns and its type)">
+            </command>
+         </menu>
+         <menu
+               label="View"
+               mnemonic="V"
+               tooltip="Options for advance users: Debug mode on/off and show some debugging information">
+            <command
+                  commandId="edu.rice.cs.hpc.viewer.actions.ShowView"
+                  label="Show views"
+                  mnemonic="v"
+                  style="push"
+                  tooltip="Show views">
+            </command>
+            <command
+                  commandId="edu.rice.cs.hpc.viewer.actions.ShowMetricProperties"
+                  label="Show metric properties"
+                  mnemonic="m"
+                  style="push"
+                  tooltip="Show and modify metric properties such as the name and the formula (case of derived metric)">
+            </command>
+            <menu
+                  label="Debug"
+                  mnemonic="D">
+               <command
+                     commandId="edu.rice.cs.hpc.viewer.command.debug.showXML"
+                     label="Show raw XML file"
+                     mnemonic="X"
+                     style="push"
+                     tooltip="Show the XML file generated by hpcprof or hpcprof-mpi of the current database">
+               </command>
+               <separator
+                     name="edu.rice.cs.hpc.viewer.menu.view.separator"
+                     visible="true">
+               </separator>
+               <command
+                     commandId="edu.rice.cs.hpc.viewer.command.debug.showCCT"
+                     label="Show CCT ID"
+                     mnemonic="C"
+                     style="toggle"
+                     tooltip="Show the CCT ID label in the tree ">
+               </command>
+               <command
+                     commandId="edu.rice.cs.hpc.viewer.command.debug.showFlatID"
+                     label="Show flat ID"
+                     mnemonic="f"
+                     style="toggle"
+                     tooltip="Show the flat ID label in the tree ">
+               </command>
+            </menu>
+         </menu>
+         <menu
+         	   id="edu.rice.cs.hpc.viewer.menu.window"
+               label="Window"
+               mnemonic="W"
+               tooltip="Window menus">
+            <command
+                  commandId="edu.rice.cs.hpc.viewer.command.resetPerspective"
+                  label="Reset layout"
+                  mnemonic="R"
+                  style="push"
+                  tooltip="Reset the current window layout to the default settings">
+            </command>
+         </menu>
+         <menu
+               id="edu.rice.cs.hpc.viewer.menu.help"
+               label="Help"
+               mnemonic="H"
+               tooltip="Help menu">
+            <command
+                  commandId="org.eclipse.ui.help.aboutAction"
+                  label="About"
+                  mnemonic="A"
+                  style="push"
+                  tooltip="About hpcviewer">
+            </command>
+            <command
+                  commandId="edu.rice.cs.hpc.viewer.command.manual"
+                  label="Help manual"
+                  mnemonic="m"
+                  style="push"
+                  tooltip="Display the manual">
+            </command>
+         </menu>
+      </menuContribution>
+   </extension>
+   <extension
+         point="org.eclipse.ui.commands">
+      <command
+            defaultHandler="edu.rice.cs.hpc.viewer.actions.OpenDatabase"
+            description="Opening a database"
+            id="edu.rice.cs.hpc.viewer.command.openDatabase"
+            name="Open database">
+      </command>
+      <command
+            defaultHandler="edu.rice.cs.hpc.viewer.actions.NewWindow"
+            id="edu.rice.cs.hpc.viewer.command.newWindow"
+            name="New window">
+      </command>
+      <command
+            defaultHandler="edu.rice.cs.hpc.viewer.actions.CloseDatabase"
+            id="edu.rice.cs.hpc.viewer.command.closeDatabase"
+            name="Close database">
+      </command>
+      <command
+            defaultHandler="edu.rice.cs.hpc.viewer.actions.HelpManual"
+            id="edu.rice.cs.hpc.viewer.command.manual"
+            name="Help manual">
+      </command>
+      <command
+            defaultHandler="edu.rice.cs.hpc.viewer.actions.CloseWindow"
+            id="edu.rice.cs.hpc.viewer.command.closeWindow"
+            name="Close window">
+      </command>
+      <command
+            defaultHandler="edu.rice.cs.hpc.viewer.actions.ResetPerspective"
+            id="edu.rice.cs.hpc.viewer.command.resetPerspective"
+            name="Reset layout">
+      </command>
+      <command
+            defaultHandler="edu.rice.cs.hpc.viewer.actions.MergeDatabaseTopDown"
+            id="edu.rice.cs.hpc.viewer.command.mergeDatabaseTopDown"
+            name="Merge database CCT">
+      </command>
+      <command
+            defaultHandler="edu.rice.cs.hpc.viewer.actions.MergeDatabaseFlat"
+            id="edu.rice.cs.hpc.viewer.command.mergeDatabaseFlat"
+            name="Merge database Flat">
+      </command>
+      <command
+            defaultHandler="edu.rice.cs.hpc.viewer.actions.showXML"
+            id="edu.rice.cs.hpc.viewer.command.debug.showXML"
+            name="show raw XML database">
+      </command>
+      <command
+            defaultHandler="edu.rice.cs.hpc.viewer.actions.DebugShowCCT"
+            description="Show CCT ID in the tree"
+            id="edu.rice.cs.hpc.viewer.command.debug.showCCT"
+            name="Show CCT">
+         <state
+               class="org.eclipse.ui.handlers.RegistryToggleState:false"
+               id="org.eclipse.ui.commands.toggleState">
+         </state>
+      </command>
+      <command
+            defaultHandler="edu.rice.cs.hpc.viewer.actions.DebugShowFlatID"
+            description="Show flat ID in the tree"
+            id="edu.rice.cs.hpc.viewer.command.debug.showFlatID"
+            name="Show flat ID">
+         <state
+               class="org.eclipse.ui.handlers.RegistryToggleState:false"
+               id="org.eclipse.ui.commands.toggleState">
+         </state>
+      </command>
+      <command
+            defaultHandler="edu.rice.cs.hpc.viewer.actions.ShowView"
+            id="edu.rice.cs.hpc.viewer.actions.ShowView"
+            name="Show view">
+      </command>
+      <command
+            defaultHandler="edu.rice.cs.hpc.viewer.actions.ShowThreadEditor"
+            id="edu.rice.cs.hpc.viewer.actions.ShowThreadEditor"
+            name="Show thread editor">
+      </command>
+      <command
+            defaultHandler="edu.rice.cs.hpc.viewer.actions.ShowMetricProperties"
+            id="edu.rice.cs.hpc.viewer.actions.ShowMetricProperties"
+            name="Show metric properties">
+      </command>
+   </extension>
+   <extension
+         point="org.eclipse.ui.services">
+      <sourceProvider
+            provider="edu.rice.cs.hpc.viewer.provider.DatabaseState">
+         <variable
+               name="edu.rice.cs.hpc.viewer.provider.data.active"
+               priorityLevel="activeWorkbenchWindow">
+         </variable>
+         <variable
+               name="edu.rice.cs.hpc.viewer.provider.data.merge"
+               priorityLevel="activeWorkbenchWindow">
+         </variable>
+         <variable
+               name="edu.rice.cs.hpc.viewer.provider.data.refresh"
+               priorityLevel="workbench">
+         </variable>
+      </sourceProvider>
+      <sourceProvider
+            provider="edu.rice.cs.hpc.viewer.provider.TableMetricState">
+         <variable
+               name="edu.rice.cs.hpc.viewer.provider.metric.visible"
+               priorityLevel="activeWorkbenchWindow">
+         </variable>
+         <variable
+               name="edu.rice.cs.hpc.viewer.provider.metric.add"
+               priorityLevel="activeWorkbenchWindow">
+         </variable>
+      </sourceProvider>
+   </extension>
+</plugin>

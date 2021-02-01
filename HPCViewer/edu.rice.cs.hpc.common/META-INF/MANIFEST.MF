@@ -1,0 +1,15 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: hpccommon
+Bundle-SymbolicName: edu.rice.cs.hpc.common;singleton:=true
+Bundle-Version: 5.5.1.qualifier
+Bundle-Activator: edu.rice.cs.hpc.common.plugin.Activator
+Require-Bundle: org.eclipse.ui,
+ org.eclipse.core.runtime,
+ edu.rice.cs.hpc.data
+Bundle-ActivationPolicy: lazy
+Bundle-Vendor: Rice University
+Export-Package:  edu.rice.cs.hpc.common.ui,
+ edu.rice.cs.hpc.common.util
+Import-Package: edu.rice.cs.hpc.data.util
+Automatic-Module-Name: edu.rice.cs.hpc.common
